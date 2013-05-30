@@ -6,16 +6,16 @@ from sys import argv
 import libvirt
 from bs4 import BeautifulSoup
 
-name = str(argv[1])
-hdloc = str(argv[2])
-mem = int(argv[3])
-numcpus = int(argv[4])
+name = argv[1]
+hdloc = argv[2]
+mem = argv[3]
+numcpus = argv[4]
 
 
 
-conn = libvirt.openReadOnly("jacobIsAss1.xml")
+conn = libvirt.open(None)
 if conn == None:
-	print("Jacob is ass error.")
+	print("Error: File not found")
 	exit(1)
 try:
 	vm = conn.lookupByName(name)
@@ -26,7 +26,7 @@ except:
 	#
 	nametag = xml.new_tag('name')
 	nametag.string = name
-	dom.append(nametag
+	dom.append(nametag)
 	#
 	dom.append(xml.new_tag('memory'))
 	dom.memory.attrs['unit'] = 'MiB'
@@ -42,12 +42,12 @@ except:
 	dom.append(xml.new_tag('devices'))
 	dom.devices.append(xml.new_tag('graphics'))
 	dom.devices.graphics.attrs['type'] = 'vnc'
-	dom.devices.graphics.attrs['port'] = vncport
+	dom.devices.graphics.attrs['port'] = -1
 	#
-	virdom = web.ctx.libvirt.defineXML(str(xml))
+	virdom = conn.defineXML(str(xml))
 	#This will be handled later.	
 
 #
 print(str(name) + "- id %d running %s % (dom0.ID(), dom0.OSType()")
-print(dom0.info())
+print(virdom.info())
 
