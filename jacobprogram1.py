@@ -48,6 +48,7 @@ except:
 	#This will be handled later.	
 
 #
-print(str(name) + "- id %d running %s % (dom0.ID(), dom0.OSType()")
-print(virdom.info())
+virdom = conn.lookupByName(name)
+print(str(name) + "- id %s running %s" % (virdom.ID(), virdom.OSType()))
+print(virdom.info()) # parse output correctly - make pretty - Use BS4
 
